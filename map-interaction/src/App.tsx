@@ -14,9 +14,6 @@ function App() {
             <li>
               <Link to="/ex2">Example#2 (React Leaflet)</Link>
             </li>
-            <li>
-              <Link to="/ex3">Example#3</Link>
-            </li>
           </ul>
         </nav>
 

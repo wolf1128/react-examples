@@ -9,14 +9,55 @@ import {
   Rectangle,
   TileLayer,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import "leaflet/dist/leaflet.css";
 import ComponentA from "../components/ComponentA";
-import { useEffect } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+
+function DraggableMarker() {
+  const customPsition: LatLngExpression = [67.8561, 20.2153];
+
+  const [draggable, setDraggable] = useState(false);
+  const [position, setPosition] = useState(customPsition);
+  const markerRef = useRef(null);
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker: any = markerRef.current;
+        if (marker != null) {
+          setPosition(marker.getLatLng());
+        }
+      },
+    }),
+    []
+  );
+  const toggleDraggable = useCallback(() => {
+    setDraggable((d) => !d);
+  }, []);
+
+  return (
+    <Marker
+      draggable={draggable}
+      eventHandlers={eventHandlers}
+      position={position}
+      ref={markerRef}
+      interactive={true}
+    >
+      <Popup minWidth={90}>
+        <span onClick={toggleDraggable}>
+          {draggable
+            ? "Marker is draggable"
+            : "You dare touch me, to make me draggable :D"}
+        </span>
+      </Popup>
+    </Marker>
+  );
+}
 
 const Ex2 = () => {
   const kirunaPosition: LatLngExpression = [67.8558, 20.2253];
-
+  const circlePosition: LatLngExpression = [67.856, 20.2253];
   const center: LatLngExpression = [67.505, 20];
+
   const rectangle: LatLngBoundsExpression = [
     [67.8558, 20.2252],
     [67.861, 20.2382],
@@ -36,7 +77,6 @@ const Ex2 = () => {
         height: "80vh",
         width: "90%",
         padding: "10px",
-        // margin: "auto auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -48,7 +88,9 @@ const Ex2 = () => {
         // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         // *** Option#2: google Maps
         attribution="Google Maps"
-        url="https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}" /* layer modes: m: map | s: satellite | h: hybrid | t: terrain */
+        /* layer modes: m: map | s: satellite | h: hybrid | t: terrain */
+        // url="https://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
+        url="https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}"
         maxZoom={19}
         minZoom={5}
       />
@@ -59,7 +101,11 @@ const Ex2 = () => {
       </Marker>
 
       <LayerGroup>
-        <Circle center={center} pathOptions={fillBlueOptions} radius={200} />
+        <Circle
+          center={circlePosition}
+          pathOptions={fillBlueOptions}
+          radius={200}
+        />
         <Circle
           center={center}
           pathOptions={fillRedOptions}
@@ -75,10 +121,11 @@ const Ex2 = () => {
         </LayerGroup>
       </LayerGroup>
       <FeatureGroup pathOptions={purpleOptions}>
-        <Popup>Guess who is here! :)</Popup>
+        <Popup>Guess who is here darling! :)</Popup>
         <Circle center={[51.51, -0.06]} radius={200} />
         <Rectangle bounds={rectangle} />
       </FeatureGroup>
+      <DraggableMarker />
     </MapContainer>
   );
 };

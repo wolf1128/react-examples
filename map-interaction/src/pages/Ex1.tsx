@@ -54,7 +54,7 @@ const Ex1 = () => {
         yesIWantToUseGoogleMapApiInternals
         hoverDistance={20}
         options={{
-          mapTypeId: "hybrid",
+          mapTypeId: "roadmap",
         }} /* options: roadmap | satellite | hybrid | terrain  /*/
       >
         <AnyReactComponent lat={65} lng={21} text="My Marker" />
