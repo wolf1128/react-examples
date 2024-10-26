@@ -1,28 +1,31 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { LatLngExpression } from "leaflet";
+import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Ex1 from "./pages/Ex1";
+import Ex2 from "./pages/Ex2";
 
 function App() {
-  const position: LatLngExpression = [51.505, -0.09];
-
   return (
-    <>
-      <MapContainer
-        center={position}
-        zoom={20}
-        scrollWheelZoom={false}
-        className="map-border"
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </MapContainer>
-    </>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/ex1">Example#1 (google-map-react)</Link>
+            </li>
+            <li>
+              <Link to="/ex2">Example#2 (React Leaflet)</Link>
+            </li>
+            <li>
+              <Link to="/ex3">Example#3</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/ex1" element={<Ex1 />} index />
+          <Route path="/ex2" element={<Ex2 />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
