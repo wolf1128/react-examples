@@ -8,10 +8,13 @@ import {
   Popup,
   Rectangle,
   TileLayer,
+  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw.css";
 import ComponentA from "../components/ComponentA";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { EditControl } from "react-leaflet-draw";
 
 function DraggableMarker() {
   const customPsition: LatLngExpression = [67.8561, 20.2153];
@@ -54,9 +57,35 @@ function DraggableMarker() {
 }
 
 const Ex2 = () => {
+  // Drawing
+  const [drawnItems, setDrawnItems] = useState<any>([]);
+
+  const onCreated = (e: any) => {
+    const { layerType, layer } = e;
+    const { _leaflet_id } = layer;
+
+    setDrawnItems((items: any) => [
+      ...items,
+      { id: _leaflet_id, layerType, layer },
+    ]);
+  };
+
+  const onDeleted = (e: any) => {
+    const { layers } = e;
+    layers.eachLayer((layer: any) => {
+      const { _leaflet_id } = layer;
+      setDrawnItems((items: any) =>
+        items.filter((item: any) => item.id !== _leaflet_id)
+      );
+    });
+  };
+
+  // MAP
   const kirunaPosition: LatLngExpression = [67.8558, 20.2253];
   const circlePosition: LatLngExpression = [67.856, 20.2253];
   const center: LatLngExpression = [67.505, 20];
+  const [clickedPosition, setClickedPosition] =
+    useState<LatLngExpression | null>(null);
 
   const rectangle: LatLngBoundsExpression = [
     [67.8558, 20.2252],
@@ -67,6 +96,19 @@ const Ex2 = () => {
   const fillRedOptions = { fillColor: "red" };
   const greenOptions = { color: "green", fillColor: "green" };
   const purpleOptions = { color: "purple" };
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click(e) {
+        setClickedPosition(e.latlng);
+      },
+    });
+    return null;
+  };
+
+  useEffect(() => {
+    console.log("You have clicked on the map at: ", clickedPosition);
+  });
 
   return (
     <MapContainer
@@ -126,6 +168,24 @@ const Ex2 = () => {
         <Rectangle bounds={rectangle} />
       </FeatureGroup>
       <DraggableMarker />
+
+      <MapClickHandler />
+
+      <FeatureGroup>
+        <EditControl
+          position="topright"
+          onCreated={onCreated}
+          onDeleted={onDeleted}
+          draw={{
+            rectangle: true,
+            polygon: true,
+            circle: true,
+            polyline: false,
+            marker: false,
+            circlemarker: false,
+          }}
+        />
+      </FeatureGroup>
     </MapContainer>
   );
 };
