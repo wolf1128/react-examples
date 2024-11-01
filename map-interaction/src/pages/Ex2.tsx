@@ -13,7 +13,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import ComponentA from "../components/ComponentA";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { EditControl } from "react-leaflet-draw";
 
 function DraggableMarker() {
@@ -106,9 +106,9 @@ const Ex2 = () => {
     return null;
   };
 
-  useEffect(() => {
-    console.log("You have clicked on the map at: ", clickedPosition);
-  });
+  // useEffect(() => {
+  //   console.log("You have clicked on the map at: ", clickedPosition);
+  // }, [clickedPosition]);
 
   return (
     <MapContainer
