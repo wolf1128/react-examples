@@ -12,7 +12,10 @@ function App() {
               <Link to="/ex1">Example#1 (google-map-react)</Link>
             </li>
             <li>
-              <Link to="/ex2">Example#2 (React Leaflet)</Link>
+              <Link to="/ex2">Example#2 (React Leaflet - Basic features)</Link>
+            </li>
+            <li>
+              <Link to="/ex3">Example#3 (React Leaflet - Advanced features)</Link>
             </li>
           </ul>
         </nav>
@@ -20,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/ex1" element={<Ex1 />} index />
           <Route path="/ex2" element={<Ex2 />} />
+          <Route path="/ex3" element={<Ex3 />} />
         </Routes>
       </div>
     </Router>

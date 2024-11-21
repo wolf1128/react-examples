@@ -15,6 +15,8 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import ComponentA from "../components/ComponentA";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { EditControl } from "react-leaflet-draw";
+import L from "leaflet";
+import ControlBar from "../components/BaseMap/ControlBar";
 
 function DraggableMarker() {
   const customPsition: LatLngExpression = [67.8561, 20.2153];
@@ -110,6 +112,13 @@ const Ex2 = () => {
   //   console.log("You have clicked on the map at: ", clickedPosition);
   // }, [clickedPosition]);
 
+  const customIcon = new L.Icon({
+    iconUrl: "",
+    iconSize: [26.4, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
+
   return (
     <MapContainer
       center={kirunaPosition}
@@ -171,21 +180,7 @@ const Ex2 = () => {
 
       <MapClickHandler />
 
-      <FeatureGroup>
-        <EditControl
-          position="topright"
-          onCreated={onCreated}
-          onDeleted={onDeleted}
-          draw={{
-            rectangle: true,
-            polygon: true,
-            circle: true,
-            polyline: false,
-            marker: false,
-            circlemarker: false,
-          }}
-        />
-      </FeatureGroup>
+      <ControlBar onCreated={onCreated} onDeleted={onDeleted} />
     </MapContainer>
   );
 };
