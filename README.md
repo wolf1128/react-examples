@@ -3,6 +3,11 @@
 # Table of Contents
 
 ## 0. Web Application 1 Course Laboratories
+
 ## 1. Map Interaction
-## 2.
-## 3.
+
+## 2. Hands on Diagram
+
+## 3. E2E Testing using Cypress
+
+## 4. ...
